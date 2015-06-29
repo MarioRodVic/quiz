@@ -6,6 +6,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var partials = require('express-partials');
+
 //importamos los dos enrutadores
 var routes = require('./routes/index');
 //var users = require('./routes/users'); comentamos porque no la vamos a usar
@@ -26,6 +28,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));//este ya viene de serie con Express
+app.use(partials());
 
 //instala enrutadores
 app.use('/', routes);
