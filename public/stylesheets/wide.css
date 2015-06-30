@@ -14,10 +14,13 @@ nav{
 nav span{
 	margin: 0px 100px 0px 0px;
 }
+nav {
+	height: 293px;
+}
 section{
 	float:right;
 	width: 80%;
-	height: 200px;
+	height: 293px;
 }
 footer{
 	clear:both;
