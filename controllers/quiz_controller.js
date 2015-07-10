@@ -14,8 +14,12 @@ exports.load = function(req, res, next, quizId){
 };
 
 exports.index = function(req, res){
-	models.Quiz.findAll().then(function(quizes){
-		res.render('quizes/index.ejs', {quizes: quizes})
+	if(typeof(req.query.search) == "undefined"){  //comprobamos si la carga de index es a través de url preguntas o búsqueda. si existe req.query.search, entonces es que index se ha cargado a través del botón buscar
+		req.query.search="";
+	}
+	
+	models.Quiz.findAll({where: ["pregunta like ?", '%'+req.query.search\/i+'%']}).then(function(quizes){
+		res.render('quizes/index.ejs', {quizes: quizes, search: req.query.search});
 	}).catch(function(error){ next(error);})
 };
 
