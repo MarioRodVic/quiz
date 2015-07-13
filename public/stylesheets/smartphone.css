@@ -16,3 +16,11 @@ body{
 footer, input{
 	font-size: large;
 }
+
+section{
+	height: 350px;
+
+}
+
+table{
+	padding-left: 50px;}
