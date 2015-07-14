@@ -41,3 +41,8 @@ nav span {
 footer a {
 	padding:10px;
 }
+
+#ErrorMsgs {
+	color: red;
+	font-size:10px;
+}

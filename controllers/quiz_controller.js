@@ -21,13 +21,13 @@ exports.index = function(req, res){
 	}
 	
 	models.Quiz.findAll({where: ["lower(pregunta) like ?", '%'+busqueda+'%'], order: 'pregunta asc'}).then(function(quizes){
-		res.render('quizes/index.ejs', {quizes: quizes, search: req.query.search});
+		res.render('quizes/index.ejs', {quizes: quizes, errors:[], search: req.query.search});
 	}).catch(function(error){ next(error);})
 };
 
 //GET /quizes/:id
 exports.show = function(req, res){
-		res.render('quizes/show', {quiz:req.quiz});
+		res.render('quizes/show', {quiz:req.quiz, errors:[]});
 
 };
 
@@ -36,26 +36,33 @@ exports.answer= function(req, res){
 	if(req.query.respuesta === req.quiz.respuesta){
 		resultado = 'Correcto!'
 	}
-	res.render('quizes/answer', {quiz: req.quiz, respuesta: resultado});
+	res.render('quizes/answer', {quiz: req.quiz, respuesta: resultado, errors:[]});
 };
 
 exports.new = function(req, res){
 	var quiz = models.Quiz.build( //crea objeto quiz
 			{pregunta: "inserte pregunta", respuesta: "inserte respuesta"}
 		);
-	res.render('quizes/new', {quiz: quiz}); //renderiza la vista quizes/new con el objeto quiz que hemos construido
+	res.render('quizes/new', {quiz: quiz, errors:[]}); //renderiza la vista quizes/new con el objeto quiz que hemos construido
 };
 
 exports.create = function(req, res){
 	var quiz = models.Quiz.build(req.body.quiz);
-	// guarda en DB los campos pregunta y respuesta de quiz
-	quiz.save({fields: ["pregunta", "respuesta"]}).then(function(){
-		res.redirect('/quizes');
-	}) //Redirecciona HTTP (URL relativo) Lista de preguntas
+
+	quiz.validate().then(function(err){
+		if(err){
+			res.render('quizes/new', {quiz: quiz, errors: err.errors});
+		}else{
+			// guarda en DB los campos pregunta y respuesta de quiz
+			quiz.save({fields: ["pregunta", "respuesta"]}).then(function(){
+				res.redirect('/quizes');  //Redirecciona HTTP (URL relativo) Lista de preguntas
+			})
+		}
+	})
 };
 
 
 //GET /author
 exports.author = function(req, res){
-	res.render('author', {autor: 'Mario Rodríguez Vicente'});
+	res.render('author', {autor: 'Mario Rodríguez Vicente', errors:[]} );
 };
