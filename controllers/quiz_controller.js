@@ -19,10 +19,16 @@ exports.index = function(req, res){
 	}else{
 		busqueda = req.query.search.toLowerCase().replace(/[ ]+/g,'%');
 	}
-	
-	models.Quiz.findAll({where: ["lower(pregunta) like ?", '%'+busqueda+'%'], order: 'pregunta asc'}).then(function(quizes){
-		res.render('quizes/index.ejs', {quizes: quizes, errors:[], search: req.query.search});
-	}).catch(function(error){ next(error);})
+	if(req.query.categ){
+		var tema = req.query.categ;
+		models.Quiz.findAll({where: ["lower(tema) like ?", '%'+tema+'%'], order: 'tema asc'}).then(function(quizes){
+		res.render('quizes/index.ejs', {quizes: quizes, errors:[]});
+		}).catch(function(error){ next(error);})	
+	}else{
+		models.Quiz.findAll({where: ["lower(pregunta) like ?", '%'+busqueda+'%'], order: 'pregunta asc'}).then(function(quizes){
+			res.render('quizes/index.ejs', {quizes: quizes, errors:[], search: req.query.search});
+		}).catch(function(error){ next(error);})
+	}
 };
 
 //GET /quizes/:id
@@ -54,7 +60,7 @@ exports.create = function(req, res){
 			res.render('quizes/new', {quiz: quiz, errors: err.errors});
 		}else{
 			// guarda en DB los campos pregunta y respuesta de quiz
-			quiz.save({fields: ["pregunta", "respuesta"]}).then(function(){
+			quiz.save({fields: ["pregunta", "respuesta", "tema"]}).then(function(){
 				res.redirect('/quizes');  //Redirecciona HTTP (URL relativo) Lista de preguntas
 			})
 		}
@@ -70,12 +76,13 @@ exports.edit = function(req, res){
 exports.update = function(req, res){
 	req.quiz.pregunta = req.body.quiz.pregunta;
 	req.quiz.respuesta = req.body.quiz.respuesta;
+	req.quiz.tema = req.body.quiz.tema;
 
 	req.quiz.validate().then(function(err){
 		if(err){
 			res.render('quizes/edit', {quiz: req.quiz, errors: err.errors})
 		}else{
-			req.quiz.save({fields: ["pregunta", "respuesta"]}).then(function(){  //guarda los datos en Base de Datos
+			req.quiz.save({fields: ["pregunta", "respuesta", "tema"]}).then(function(){  //guarda los datos en Base de Datos
 				res.redirect('/quizes'); //redirecciona al listado de preguntas
 			});
 		}

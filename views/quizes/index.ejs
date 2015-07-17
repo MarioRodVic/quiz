@@ -1,10 +1,20 @@
 <div class="preguntas" style="float:left">
-<p>Seleccione la pregunta: </p>
+<p>Seleccione pregunta o categoría </p><br>
 	<table>
+		<tr>
+			<td>Pregunta</td>
+			<td>Categoría</td>
+		</tr>
 	<% var i; 
 		for(i=0;i<quizes.length;i++){ %>
 		<tr>
 			<td><a href="quizes/<%= quizes[i].id %>"><%= quizes[i].pregunta %></a></td>
+			<td>
+				<form action="/quizes" method="get" name="formCateg"> 
+					<input hidden name="categ" type="text" value="<%= quizes[i].tema %>" />
+					<a href="javascript:;" onclick="parentNode.submit();"><%= quizes[i].tema %></a>
+				</form>
+			</td>
 			<td><a href="quizes/<%= quizes[i].id %>/edit"><button>editar</button></a></td>
 			<td><form method="post" action="quizes/<%= quizes[i].id %>?_method=delete">
 					<button type="submit" onclick="return confirm('Borrar: <%= quizes[i].pregunta %>');">Borrar</button>
@@ -15,7 +25,7 @@
 	</table>
 </div>
  <form method="get" action="/quizes">
- <p>Buscar:</p>
+ <p>Buscar por pregunta:</p>
  	<input type="text" name="search"/>
 	<input type="submit" value="Enviar"/>
  </form>
