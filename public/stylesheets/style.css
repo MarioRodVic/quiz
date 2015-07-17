@@ -20,7 +20,7 @@ body {
 
 section  {
 	padding:20px;
-	height: 300px;
+	height: auto;
 
 }
 
@@ -40,6 +40,9 @@ nav span {
 
 footer a {
 	padding:10px;
+}
+nav {
+	height: auto;
 }
 
 #ErrorMsgs {
