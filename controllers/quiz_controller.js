@@ -21,7 +21,7 @@ exports.index = function(req, res){
 	}
 	if(req.query.categ){
 		var tema = req.query.categ;
-		models.Quiz.findAll({where: ["lower(tema) like ?", '%'+tema+'%'], order: 'tema asc'}).then(function(quizes){
+		models.Quiz.findAll({where: ["tema = ?", ''+tema+''], order: 'tema asc'}).then(function(quizes){
 		res.render('quizes/index.ejs', {quizes: quizes, errors:[]});
 		}).catch(function(error){ next(error);})	
 	}else{
