@@ -10,6 +10,8 @@ var partials = require('express-partials');
 
 var methodOverride = require('method-override');
 
+var session = require('express-session');
+
 //importamos los dos enrutadores
 var routes = require('./routes/index');
 //var users = require('./routes/users'); comentamos porque no la vamos a usar
@@ -28,8 +30,22 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
+app.use(cookieParser('Quiz MRV'));
+app.use(session());
 app.use(express.static(path.join(__dirname, 'public')));//este ya viene de serie con Express
+
+//Herlpers dinámicos
+app.use(function(req, res, next){
+    //guarda path de la solicitud en session.redir para después de login vuelva a la página en la que estaba el cliente
+    if(!req.path.match(/\/login|\/logout/)){
+        req.session.redir = req.path;
+    }
+    // Hacer visible req.session en las vistas
+    res.locals.session = req.session;
+    next();
+});
+
+
 app.use(partials());
 app.use(methodOverride('_method'));
 
