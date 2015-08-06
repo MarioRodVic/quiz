@@ -14,7 +14,7 @@
 		<%if(!session.user){%>
 			<span style="float:right"><a href="/login">Login</a></span>
 		<%}else{%>
-			<span style="float:right"><%=session.user.username%><a href="/logout">Logout</a></span>
+			<span style="float:right"><%=session.user.username %><a style="padding-left:2px"href="/logout">Logout</a></span>
 		<%}%>
 			<h2>Quiz<span>: El Juego de las Preguntas</span></h2>
 		</header>
