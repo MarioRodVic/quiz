@@ -13,7 +13,9 @@ router.get('/', function(req, res) {
 //Autoload de comandos con :quizId
 //quizController.load() se instala para que se ejecute antes de que lo necesiten las rutas show y answer y solo en el caso de que path contenga :quizId, referenciando un recurso en la tabla Quiz de la base de datos que 
 //deba ser procesado por el controlador. Sí quizId existe en la ruta entonces llama a load
-router.param('quizId', quizController.load);
+router.param('quizId', quizController.load); //autoload :quizId
+
+router.param('commentId', commentController.load); //autoload: commentId
 
 //Definición de rutas de sesión
 router.get('/login', sessionController.new);       //formulario login
@@ -35,5 +37,6 @@ router.delete('/quizes/:quizId(\\d+)',       sessionController.loginRequired, qu
 
 router.get('/quizes/:quizId(\\d+)/comments/new', commentController.new);
 router.post('/quizes/:quizId(\\d+)/comments', commentController.create);
+router.put('/quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish', sessionController.loginRequired, commentController.publish);
 
 module.exports = router;
