@@ -13,6 +13,7 @@
 		<header class="main" id="h1">
 		<%if(!session.user){%>
 			<span style="float:right"><a href="/login">Login</a></span>
+			<span style="color:red"><%=locals.aviso%></span>
 		<%}else{%>
 			<span style="float:right"><%=session.user.username %><a style="padding-left:2px"href="/logout">Logout</a></span>
 		<%}%>

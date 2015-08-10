@@ -45,6 +45,26 @@ app.use(function(req, res, next){
     next();
 });
 
+//MW para controlar expiración de sesión por inactividad
+
+//tiempo de sesion
+ app.use(function(req, res, next) {
+    res.locals.aviso = "";
+     if(req.session.user){//si existe una sesión de usuario
+         if(!req.session.iniciaTiempo){//y no existe la variable iniciaTiempo la crea con la hora actual
+             req.session.iniciaTiempo=Date.now()
+        }else{//si existe la variable iniciaTiempo y esta se creó hace mas de dos minutos, entonces borra la sesión
+            if(Date.now()-req.session.iniciaTiempo > 120000){
+                res.locals.aviso = "Su sesión ha expirado por inactividad";
+                delete req.session.user;  
+                req.session.iniciaTiempo=null;//"borramos" la variable iniciaTiempo también al destrui la sesión en session_controller.js
+            }else{
+                req.session.iniciaTiempo=Date.now(); //si no se destruye la sesión se actualiza el tiempo en la variable iniciaTiempo
+            }
+        }
+    }
+    next();
+});
 
 app.use(partials());
 app.use(methodOverride('_method'));
