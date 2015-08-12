@@ -57,7 +57,7 @@ app.use(function(req, res, next){
             if(Date.now()-req.session.iniciaTiempo > 120000){
                 res.locals.aviso = "Su sesión ha expirado por inactividad";
                 delete req.session.user;  
-                req.session.iniciaTiempo=null;//"borramos" la variable iniciaTiempo también al destrui la sesión en session_controller.js
+                delete req.session.iniciaTiempo;//borramos la variable iniciaTiempo también hay que borrarla en session_controller.js
             }else{
                 req.session.iniciaTiempo=Date.now(); //si no se destruye la sesión se actualiza el tiempo en la variable iniciaTiempo
             }

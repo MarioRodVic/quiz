@@ -17,11 +17,12 @@
 			</td>
 			<%if(session.user){%>
 			<td>
-				<a href="quizes/<%= quizes[i].id %>/edit"><button>editar</button></a>
+				<a title="Editar" href="quizes/<%= quizes[i].id %>/edit"><img src="images/editar.png" alt="editar"></img>
 			</td>
 			<td>
 				<form method="post" action="quizes/<%= quizes[i].id %>?_method=delete">
-					<button type="submit" onclick="return confirm('Borrar: <%= quizes[i].pregunta %>');">Borrar</button>
+					<!-- <button type="submit" onclick="return confirm('Borrar: <%= quizes[i].pregunta %>');">Borrar</button> -->
+					<input title="Borrar" type="image" src="images/borrar.png" name="submit"  onclick="return confirm('Borrar: <%= quizes[i].pregunta %>');"/>
 				</form>
 			</td>
 			<%}%>

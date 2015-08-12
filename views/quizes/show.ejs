@@ -11,10 +11,19 @@
  	<%if(quiz.Comments[index].publicado || session.user){%>
  	  <table> 
  		<tr>
- 			<td><%=quiz.Comments[index].texto%></td>
+ 			<td>--><%=quiz.Comments[index].texto%></td>
  			<td>
  				<%if(session.user && !quiz.Comments[index].publicado){%>
- 					<form method="post" action="/quizes/<%= quiz.id %>/comments/<%= quiz.Comments[index].id %>/publish?_method=put"><button type="submit">Publicar</button></form>
+ 					<form method="post" action="/quizes/<%= quiz.id %>/comments/<%= quiz.Comments[index].id %>/publish?_method=put">
+ 					   <input title="Publicar" style="width:20%;float:left;padding-bottom:8px;" type="image" src="/images/publicar.png" name="submit"/>
+ 					</form>
+ 				<%}%>
+ 			</td>
+ 			<td>
+ 				 <%if(session.user && quiz.Comments[index].publicado){%>
+ 					<form method="post" action="/quizes/<%= quiz.id %>/comments/<%= quiz.Comments[index].id %>?_method=delete">
+ 						<input title="Borrar" type="image" src="/images/borrar.png" name="submit"  onclick="return confirm('¿Borrar Comentario?');"/>
+ 					</form>
  				<%}%>
  			</td>
  		</tr>

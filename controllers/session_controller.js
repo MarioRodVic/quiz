@@ -43,6 +43,6 @@ exports.create = function(req, res){
 exports.destroy = function(req, res){
 
 	delete req.session.user;
-	req.session.iniciaTiempo=null; //para el control de expiración de sesión
+	delete req.session.iniciaTiempo; //para el control de expiración de sesión
 	res.redirect(req.session.redir.toString()); //redirect a path anterior a login
 };
